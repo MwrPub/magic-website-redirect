@@ -25,8 +25,7 @@
 			fetch("https://kvdb.io/" + conf.token + "/url_" + code, {
 				'method': 'POST', 'body': txt_url.value
 			}).then(r => {
-				let url = location.toString();
-				if(url.indexOf('#')!==-1) url = url.substr(0,url.indexOf('#'));
+				let url = "https://mwr.pub/u/";
 				url += '#' + code;
 				txt_result.innerHTML = `<a href="${url}">${url}</a>`;
 			});
