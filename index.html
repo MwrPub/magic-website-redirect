@@ -4,12 +4,14 @@
 <title>Magic Website Redirect</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
-<script type="text/javascript" src="./hashids.min.js"></script>
 </head>
 <body>
-<p><input type="text" id="txt_url"></p>
+<div id="container" style="display:none;">
+<h3>短链接生成器</h3>
+<p><input type="text" id="txt_url" placeholder="输入网址"></p>
 <p><button id="btn_create">生成</button></p>
 <p id="txt_result"></p>
+</div>
 <script type="text/javascript">
 'use strict';
 (function(){
@@ -17,15 +19,20 @@
 	let txt_url = document.getElementById('txt_url');
 	let txt_result = document.getElementById('txt_result');
 	document.getElementById('btn_create').addEventListener('click',_=>{
-		let code = getRandom();
-		fetch("https://kvdb.io/" + conf.token + "/url_" + code, {
-			'method': 'POST', 'body': txt_url.value
-		}).then(r => {
-			let url = location.toString();
-			if(url.indexOf('#')!==-1) url = url.substr(0,url.indexOf('#'));
-			url += '#' + code;
-			txt_result.innerHTML = `<a href="${url}">${url}</a>`;
-		});
+		let text_in = txt_url.value;
+		if(text_in.startsWith("https://") || text_in.startsWith("http://")){
+			let code = getRandom();
+			fetch("https://kvdb.io/" + conf.token + "/url_" + code, {
+				'method': 'POST', 'body': txt_url.value
+			}).then(r => {
+				let url = location.toString();
+				if(url.indexOf('#')!==-1) url = url.substr(0,url.indexOf('#'));
+				url += '#' + code;
+				txt_result.innerHTML = `<a href="${url}">${url}</a>`;
+			});
+		}else{
+			window.alert("请输入网址~");
+		}
 	});
 	window.addEventListener('hashchange', function (e) {
 		loadContent();
@@ -37,6 +44,8 @@
 				.then(r => r.text()).then(r => {
 					location.href = r;
 			});
+		}else{
+			document.getElementById('container').style.display="block";
 		}
 	}
 	function getRandom(){
