@@ -14,7 +14,6 @@
 'use strict';
 (function(){
 	let conf = {token:"DHqE9tpKjfyAmnPdjUWwDE"};
-	let hashData = location.hash.substr(1);
 	let txt_url = document.getElementById('txt_url');
 	let txt_result = document.getElementById('txt_result');
 	document.getElementById('btn_create').addEventListener('click',_=>{
@@ -32,6 +31,7 @@
 		loadContent();
 	});
 	function loadContent(){
+		let hashData = location.hash.substr(1);
 		if(hashData){
 			fetch("https://kvdb.io/" + conf.token + "/url_" + hashData)
 				.then(r => r.text()).then(r => {
@@ -42,6 +42,7 @@
 	function getRandom(){
 		return Math.random().toString(32).substring(2, 5) + Math.random().toString(32).substring(2, 5);
 	}
+	loadContent();
 })();
 </script>
 </body>
